@@ -3,6 +3,17 @@ import {Messages} from "../../components/messages";
 import {AsyncButton} from "../../components/buttons";
 import LoginApi from "../../shared/core/api/login-api";
 
+const products = {
+  suma: {
+    title: <span>SUSE<br/> Manager</span>,
+    url: 'http://www.suse.com/products/suse-manager/'
+  },
+  uyuni: {
+    title: 'Uyuni',
+    url: 'http://www.uyuni-project.org/'
+  },
+}
+
 class Login extends React.Component {
 
   constructor(props) {
@@ -41,6 +52,8 @@ class Login extends React.Component {
 
   render() {
 
+    const product = this.props.isUyuni ? products.uyuni : products.suma;
+
     return (
       <LoginApi bounce={this.props.bounce}>
         {
@@ -51,6 +64,15 @@ class Login extends React.Component {
              messages,
            }) => (
             <form name="loginForm">
+              <div className="col-sm-6">
+                <h1 className="Raleway-font">{product.title}</h1>
+                <p className="gray-text margins-updown">
+                  Discover a new way of managing your servers, packages, patches and more via one interface.
+                </p>
+                <p className="gray-text">
+                  Learn more about Uyuni: <a href={product.url} className="btn-dark" target="_blank"> View website</a>
+                </p>
+              </div>
               <div className="col-sm-5 col-sm-offset-1">
                 {
                   this.renderMessages({success, messages})

@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.LoginAction;
 import com.redhat.rhn.frontend.action.LoginHelper;
@@ -88,6 +89,8 @@ public class LoginController {
 
         Map<String, Object> model = new HashMap<>();
         model.put("url_bounce", urlBounce);
+        model.put("isUyuni", ConfigDefaults.get().isUyuni());
+
         // TODO: Support request method for redirection?
         // model.put("request_method", reqMethod);
         return new ModelAndView(model, "controllers/login/templates/login.jade");

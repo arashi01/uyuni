@@ -15,6 +15,7 @@ script(type='text/javascript').
     pageRenderers.login.renderer(
         'login',
         {
+            isUyuni: JSON.parse("#{isUyuni}"),
             urlBounce: document.getElementById('init_data_url_bounce').textContent
         }
     );
