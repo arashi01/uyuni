@@ -16,6 +16,7 @@ script(type='text/javascript').
         'login',
         {
             isUyuni: JSON.parse("#{isUyuni}"),
-            urlBounce: document.getElementById('init_data_url_bounce').textContent
+            urlBounce: document.getElementById('init_data_url_bounce').textContent,
+            validationErrors: JSON.parse('!{validationErrors}'),
         }
     );

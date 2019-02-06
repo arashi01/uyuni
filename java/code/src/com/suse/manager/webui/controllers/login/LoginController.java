@@ -88,6 +88,7 @@ public class LoginController {
         Map<String, Object> model = new HashMap<>();
         model.put("url_bounce", urlBounce);
         model.put("isUyuni", ConfigDefaults.get().isUyuni());
+        model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
 
         // TODO: Support request method for redirection?
         // model.put("request_method", reqMethod);

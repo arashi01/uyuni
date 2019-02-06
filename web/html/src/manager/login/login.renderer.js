@@ -4,10 +4,11 @@ import React from "react";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.login = window.pageRenderers.login || {};
-window.pageRenderers.login.renderer = (id, {isUyuni, urlBounce}) => ReactDOM.render(
+window.pageRenderers.login.renderer = (id, {isUyuni, urlBounce, validationErrors, schemaUpgradeRequired}) => ReactDOM.render(
   <Login
     isUyuni={isUyuni}
     bounce={urlBounce}
+    validationErrors={validationErrors}
   />,
   document.getElementById(id)
 );

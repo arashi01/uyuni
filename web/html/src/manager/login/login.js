@@ -36,6 +36,13 @@ class Login extends React.Component {
     });
   };
 
+  renderValidationErrors = (validationErrors) => {
+    if (!this.validationErrors || !this.validationErrors.length) {
+      return  <Messages items={validationErrors.map((msg) => ({ severity: "error", text: msg }) )} />;
+    }
+    return (null);
+  }
+
   renderMessages = ({success, messages}) => {
     if (success) {
       return <Messages items={[{severity: "success", text:
@@ -63,34 +70,39 @@ class Login extends React.Component {
              loading,
              messages,
            }) => (
-            <form name="loginForm">
-              <div className="col-sm-6">
-                <h1 className="Raleway-font">{product.title}</h1>
-                <p className="gray-text margins-updown">
-                  Discover a new way of managing your servers, packages, patches and more via one interface.
-                </p>
-                <p className="gray-text">
-                  Learn more about Uyuni: <a href={product.url} className="btn-dark" target="_blank"> View website</a>
-                </p>
-              </div>
-              <div className="col-sm-5 col-sm-offset-1">
+            <div name="container">
                 {
-                  this.renderMessages({success, messages})
+                  this.renderValidationErrors(this.props.validationErrors)
                 }
-                <h2 className="Raleway-font gray-text">{t("Sign In")}</h2>
-                <div className="margins-updown">
-                  <input name="login" className="form-control" type="text" placeholder={t("Login")}
-                         value={this.state.login} onChange={this.loginChanged}/>
-                  <input name="password" className="form-control" type="password" placeholder={t("Password")}
-                         value={this.state.password} onChange={this.passwordChanged}/>
-                  <AsyncButton
-                    id="login-btn"
-                    defaultType="btn-success btn-block"
-                    text={t("Sign In")}
-                    action={() => onLogin({login: this.state.login, password: this.state.password})}/>
+              <form name="loginForm">
+                <div className="col-sm-6">
+                  <h1 className="Raleway-font">{product.title}</h1>
+                  <p className="gray-text margins-updown">
+                    Discover a new way of managing your servers, packages, patches and more via one interface.
+                  </p>
+                  <p className="gray-text">
+                    Learn more about Uyuni: <a href={product.url} className="btn-dark" target="_blank"> View website</a>
+                  </p>
                 </div>
-              </div>
-            </form>
+                <div className="col-sm-5 col-sm-offset-1">
+                  {
+                    this.renderMessages({success, messages})
+                  }
+                  <h2 className="Raleway-font gray-text">{t("Sign In")}</h2>
+                  <div className="margins-updown">
+                    <input name="login" className="form-control" type="text" placeholder={t("Login")}
+                          value={this.state.login} onChange={this.loginChanged}/>
+                    <input name="password" className="form-control" type="password" placeholder={t("Password")}
+                          value={this.state.password} onChange={this.passwordChanged}/>
+                    <AsyncButton
+                      id="login-btn"
+                      defaultType="btn-success btn-block"
+                      text={t("Sign In")}
+                      action={() => onLogin({login: this.state.login, password: this.state.password})}/>
+                  </div>
+                </div>
+              </form>
+            </div>
           )
         }
       </LoginApi>
