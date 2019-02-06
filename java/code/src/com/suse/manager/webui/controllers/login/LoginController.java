@@ -26,10 +26,9 @@ import com.redhat.rhn.frontend.action.LoginHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.suse.utils.Json;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -49,7 +47,7 @@ import spark.template.jade.JadeTemplateEngine;
 public class LoginController {
 
     private static Logger log = Logger.getLogger(LoginController.class);
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = Json.GSON;
     private static final String URL_CREATE_FIRST_USER = "/newlogin/CreateFirstUser.do";
 
     private LoginController() { }
