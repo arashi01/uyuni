@@ -89,6 +89,7 @@ public class LoginController {
         model.put("url_bounce", urlBounce);
         model.put("isUyuni", ConfigDefaults.get().isUyuni());
         model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
+        model.put("schemaUpgradeRequired", Json.GSON.toJson(LoginHelper.isSchemaUpgradeRequired()));
 
         // TODO: Support request method for redirection?
         // model.put("request_method", reqMethod);

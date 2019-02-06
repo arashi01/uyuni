@@ -9,6 +9,7 @@ window.pageRenderers.login.renderer = (id, {isUyuni, urlBounce, validationErrors
     isUyuni={isUyuni}
     bounce={urlBounce}
     validationErrors={validationErrors}
+    schemaUpgradeRequired={schemaUpgradeRequired}
   />,
   document.getElementById(id)
 );

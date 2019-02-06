@@ -14,6 +14,11 @@ const products = {
   },
 }
 
+const schemaUpgradeRequiredMessage = {
+  true: "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems.",
+  false: ''
+}
+
 class Login extends React.Component {
 
   constructor(props) {
@@ -41,6 +46,12 @@ class Login extends React.Component {
       return  <Messages items={validationErrors.map((msg) => ({ severity: "error", text: msg }) )} />;
     }
     return (null);
+  }
+
+  renderSchemaUpgradeRequired = (schemaUpgradeRequired) => {
+    if (schemaUpgradeRequired) {
+      return  <Messages items={[{severity: "error", text: schemaUpgradeRequiredMessage[schemaUpgradeRequired]} ]} />;
+    }
   }
 
   renderMessages = ({success, messages}) => {
@@ -73,6 +84,9 @@ class Login extends React.Component {
             <div name="container">
                 {
                   this.renderValidationErrors(this.props.validationErrors)
+                }
+                {
+                  this.renderSchemaUpgradeRequired(this.props.schemaUpgradeRequired)
                 }
               <form name="loginForm">
                 <div className="col-sm-6">
