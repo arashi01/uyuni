@@ -1,12 +1,13 @@
-import React from 'react';
-import { hot } from 'react-hot-loader';
-import { Messages } from '../../components/messages';
-import { AsyncButton } from '../../components/buttons';
-import LoginApi from '../../shared/core/api/login-api';
+import React, {useEffect, useRef} from 'react';
+import {hot} from 'react-hot-loader';
+import {Messages} from '../../components/messages';
+import {AsyncButton} from '../../components/buttons';
+import useLoginApi from '../../shared/core/api/use-login-api';
 import styles from './login.css';
 
 import LoginHeader from './login-header';
 import LoginFooter from "./login-footer";
+import {useInputValue} from "components/hooks/forms/useInputValue";
 
 const products = {
   suma: {
@@ -25,151 +26,113 @@ const products = {
   },
 };
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.userNameInputRef = React.createRef();
-    this.state = {
-      login: '',
-      password: '',
-    };
+const getGlobalMessages = (validationErrors, schemaUpgradeRequired) => {
+  let messages = [];
+
+  if (!validationErrors || !validationErrors.length) {
+    messages = [].concat(validationErrors.map(msg => ({ severity: 'error', text: msg })))
   }
 
-  componentDidMount() {
-    this.userNameInputRef.current.focus();
+  if (schemaUpgradeRequired) {
+    const schemaUpgradeError = t('A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems.')
+    messages.concat({ severity: 'error', text: schemaUpgradeError });
   }
 
-  loginChanged = (event) => {
-    this.setState({
-      login: event.target.value,
-    });
-  };
+  return messages;
+}
 
-  passwordChanged = (event) => {
-    this.setState({
-      password: event.target.value,
-    });
-  };
-
-  renderValidationErrors = (validationErrors) => {
-    if (!this.validationErrors || !this.validationErrors.length) {
-      return <Messages items={validationErrors.map(msg => ({ severity: 'error', text: msg }))} />;
-    }
-    return (null);
+const getFormMessages = (success, messages) => {
+  if (success) {
+    return [{severity: "success", text: <p>{t('Successfully logged in! Redirecting...')}.</p>}];
   }
 
-  renderSchemaUpgradeRequired = (schemaUpgradeRequired) => {
-    if (schemaUpgradeRequired) {
-      const schemaUpgradeError = t('A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems.')
-      return <Messages items={[{ severity: 'error', text: schemaUpgradeError }]} />;
-    }
+  if (messages.length > 0) {
+    return messages.map(msg => ({ severity: 'error', text: msg }));
   }
 
-  renderMessages = ({ success, messages }) => {
-    if (success) {
-      return <Messages items={[{severity: "success", text:
-          <p>{t('Successfully logged in! Redirecting...')}.</p>
-      }]} />;
-    }
+  return [];
+};
 
-    if (messages.length > 0) {
-      return <Messages items={messages.map(msg => ({ severity: 'error', text: msg }))} />;
-    }
+const Login = (props: Props) => {
 
-    return (null);
-  };
 
-  render() {
-    const product = this.props.isUyuni ? products.uyuni : products.suma;
+  let loginInput = useInputValue('');
+  let passwordInput = useInputValue('');
+  let {onLogin, success, messages} = useLoginApi({bounce: props.bounce});
+  const loginInputRef = useRef();
 
-    return (
-      <React.Fragment>
+  useEffect(() => {
+    loginInputRef.current.focus();
+  }, []);
 
-        <LoginHeader
-          title={product.title}
-          text={product.headerTitle}
-          customHeader={this.props.customHeader}/>
+  const product = props.isUyuni ? products.uyuni : products.suma;
 
-        <div className={`spacewalk-main-column-layout ${styles.fixed_content}`}>
-          <section id="spacewalk-content">
-            <div className="wrap">
-              <div name="container">
-                {
-                  this.renderValidationErrors(this.props.validationErrors)
-                }
-                {
-                  this.renderSchemaUpgradeRequired(this.props.schemaUpgradeRequired)
-                }
-                <LoginApi bounce={this.props.bounce}>
-                  {
-                    ({
-                      onLogin,
-                      success,
-                      loading,
-                      messages,
-                    }) => (
-                      <React.Fragment>
-                        <div className="col-sm-6">
-                          <h1 className="Raleway-font">{product.bodyTitle}</h1>
-                          <p className="gray-text margins-updown">
-                            Discover a new way of managing your servers, packages, patches and more via one interface.
-                          </p>
-                          <p className="gray-text">
-                            Learn more about {product.key}:
-                            <a href={product.url} className="btn-dark" target="_blank"> View website</a>
-                          </p>
-                        </div>
-                        <div className="col-sm-5 col-sm-offset-1">
-                          {
-                            this.renderMessages({ success, messages })
-                          }
-                          <h2 className="Raleway-font gray-text">{t('Sign In')}</h2>
-                          <form name="loginForm">
-                            <div className="margins-updown">
-                              <input
-                                name="login"
-                                className="form-control"
-                                type="text"
-                                placeholder={t('Login')}
-                                value={this.state.login}
-                                onChange={this.loginChanged}
-                                ref={this.userNameInputRef}
-                              />
-                              <input
-                                name="password"
-                                className="form-control"
-                                type="password"
-                                placeholder={t('Password')}
-                                value={this.state.password}
-                                onChange={this.passwordChanged}
-                              />
-                              <AsyncButton
-                                id="login-btn"
-                                className="btn-block"
-                                defaultType="btn-success"
-                                text={t('Sign In')}
-                                action={() => onLogin({ login: this.state.login, password: this.state.password })}
-                              />
-                            </div>
-                          </form>
-                          <hr />
-                        </div>
-                      </React.Fragment>
-                    )}
-                </LoginApi>
-              </div>
+  return (
+    <React.Fragment>
+
+      <LoginHeader
+        title={product.title}
+        text={product.headerTitle}
+        customHeader={props.customHeader}/>
+
+      <div className={`spacewalk-main-column-layout ${styles.fixed_content}`}>
+        <section id="spacewalk-content">
+          <div className="wrap">
+            <div name="container">
+              <Messages items={getGlobalMessages(props.validationErrors, props.schemaUpgradeRequired)} />
+              <React.Fragment>
+                <div className="col-sm-6">
+                  <h1 className="Raleway-font">{product.bodyTitle}</h1>
+                  <p className="gray-text margins-updown">
+                    Discover a new way of managing your servers, packages, patches and more via one interface.
+                  </p>
+                  <p className="gray-text">
+                    Learn more about {product.key}:
+                    <a href={product.url} className="btn-dark" target="_blank"> View website</a>
+                  </p>
+                </div>
+                <div className="col-sm-5 col-sm-offset-1">
+                  <Messages items={getFormMessages(success, messages)} />
+                  <h2 className="Raleway-font gray-text">{t('Sign In')}</h2>
+                  <form name="loginForm">
+                    <div className="margins-updown">
+                      <input
+                        name="login"
+                        className="form-control"
+                        type="text"
+                        placeholder={t('Login')}
+                        ref={loginInputRef}
+                        {...loginInput} />
+                      <input
+                        name="password"
+                        className="form-control"
+                        type="password"
+                        placeholder={t('Password')}
+                        {...passwordInput}/>
+                      <AsyncButton
+                        id="login-btn"
+                        className="btn-block"
+                        defaultType="btn-success"
+                        text={t('Sign In')}
+                        action={() => onLogin({ login: loginInput.value, password: passwordInput.value })}
+                      />
+                    </div>
+                  </form>
+                  <hr/>
+                </div>
+              </React.Fragment>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+      </div>
 
-        <LoginFooter
-          productName={this.props.productName}
-          customFooter={this.props.customFooter}
-          webVersion={this.props.webVersion} />
+      <LoginFooter
+        productName={props.productName}
+        customFooter={props.customFooter}
+        webVersion={props.webVersion} />
 
-      </React.Fragment>
-    );
-  }
+    </React.Fragment>
+  );
 }
 
 export default hot(module)(Login);
