@@ -36,9 +36,7 @@ const useLoginApi = (props) => {
         setSuccess(data.success);
         setMessages(data.messages && data.messages.map(msg => errorsMessage[msg]));
         setLoading(false);
-        if (data.success) {
-          window.location.replace(props.bounce);
-        }
+        return data.success;
       }, (xhr) => {
         const errMessages = xhr.status === 0
           ? [t('Request interrupted or invalid response received from the server. Please try again.')]

@@ -30,12 +30,12 @@ const getGlobalMessages = (validationErrors, schemaUpgradeRequired) => {
   let messages = [];
 
   if (!validationErrors || !validationErrors.length) {
-    messages = [].concat(validationErrors.map(msg => ({ severity: 'error', text: msg })))
+    messages = messages.concat(validationErrors.map(msg => ({ severity: 'error', text: msg })))
   }
 
   if (schemaUpgradeRequired) {
     const schemaUpgradeError = t('A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems.')
-    messages.concat({ severity: 'error', text: schemaUpgradeError });
+    messages = messages.concat({ severity: 'error', text: schemaUpgradeError });
   }
 
   return messages;
@@ -58,7 +58,7 @@ const Login = (props: Props) => {
 
   let loginInput = useInputValue('');
   let passwordInput = useInputValue('');
-  let {onLogin, success, messages} = useLoginApi({bounce: props.bounce});
+  let {onLogin, success, messages} = useLoginApi();
   const loginInputRef = useRef();
 
   useEffect(() => {
@@ -97,6 +97,7 @@ const Login = (props: Props) => {
                   <form name="loginForm">
                     <div className="margins-updown">
                       <input
+                        id="username-field"
                         name="login"
                         className="form-control"
                         type="text"
@@ -104,6 +105,8 @@ const Login = (props: Props) => {
                         ref={loginInputRef}
                         {...loginInput} />
                       <input
+                        id="password-field"
+
                         name="password"
                         className="form-control"
                         type="password"
@@ -114,11 +117,17 @@ const Login = (props: Props) => {
                         className="btn-block"
                         defaultType="btn-success"
                         text={t('Sign In')}
-                        action={() => onLogin({ login: loginInput.value, password: passwordInput.value })}
+                        action={() =>
+                          onLogin({ login: loginInput.value, password: passwordInput.value })
+                            .then(success => success && window.location.replace(props.bounce))
+                        }
                       />
                     </div>
                   </form>
                   <hr/>
+                  <p className="gray-text small-text">
+                    {props.legalNote}
+                  </p>
                 </div>
               </React.Fragment>
             </div>

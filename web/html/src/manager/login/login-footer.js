@@ -7,11 +7,10 @@ const LoginFooter = (props) => {
       <div className={styles.footer_fixed_bottom}>
         <div className="wrapper wrap">
           <div className="footer-copyright">
-            <a href="/rhn/help/Copyright.do">Copyright Notice</a>
-            {' '}
+            <a href="/rhn/help/Copyright.do">Copyright Notice</a>{' '}
           </div>
           <div className="footer-release">
-            &nbsp;{props.productName}{' '}release{' '}
+            {' '}{props.productName} release{' '}
             <a href="/rhn/help/dispatcher/release_notes">
               {props.webVersion}
             </a>

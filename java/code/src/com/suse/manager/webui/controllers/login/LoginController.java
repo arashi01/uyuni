@@ -95,6 +95,7 @@ public class LoginController {
         model.put("productName", Config.get().getString(ConfigDefaults.PRODUCT_NAME));
         model.put("customHeader", Config.get().getString("java.custom_header"));
         model.put("customFooter", Config.get().getString("java.custom_footer"));
+        model.put("legalNote", Config.get().getString("java.legal_note"));
 
         // TODO: Support request method for redirection?
         // model.put("request_method", reqMethod);

@@ -12,7 +12,8 @@ window.pageRenderers.login.renderer = (id, {
   webVersion,
   productName,
   customHeader,
-  customFooter
+  customFooter,
+  legalNote
 }) => {
   ReactDOM.render(
     <Login
@@ -24,6 +25,7 @@ window.pageRenderers.login.renderer = (id, {
       productName={productName}
       customHeader={customHeader}
       customFooter={customFooter}
+      legalNote={legalNote}
     />,
     document.getElementById(id),
   );
