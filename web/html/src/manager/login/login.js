@@ -1,24 +1,32 @@
-import React, {useEffect, useRef} from 'react';
-import {hot} from 'react-hot-loader';
-import {Messages} from '../../components/messages';
-import {AsyncButton} from '../../components/buttons';
+//@flow
+
+// $FlowFixMe  // upgrade flow
+import React, { useEffect, useRef } from 'react';
+import { hot } from 'react-hot-loader';
+import { useInputValue } from 'components/hooks/forms/useInputValue';
+import { Messages } from '../../components/messages';
+import { AsyncButton } from '../../components/buttons';
 import useLoginApi from '../../shared/core/api/use-login-api';
 import styles from './login.css';
 
 import LoginHeader from './login-header';
-import LoginFooter from "./login-footer";
-import {useInputValue} from "components/hooks/forms/useInputValue";
+import LoginFooter from './login-footer';
 
 const products = {
   suma: {
-    key: "SUSE Manager",
-    headerTitle: <React.Fragment><span>SUSE</span><i className="fa fa-registered" /><span>Manager</span></React.Fragment>,
-    bodyTitle: <span>SUSE<br />{' '}Manager</span>,
+    key: 'SUSE Manager',
+    headerTitle:
+      <React.Fragment>
+        <span>SUSE</span>
+        <i className="fa fa-registered" />
+        <span>Manager</span>
+      </React.Fragment>,
+    bodyTitle: <span>SUSE<br />{' Manager'}</span>,
     url: 'http://www.suse.com/products/suse-manager/',
     title: 'SUSE Manager login page',
   },
   uyuni: {
-    key: "Uyuni",
+    key: 'Uyuni',
     headerTitle: 'Uyuni',
     bodyTitle: 'Uyuni',
     url: 'http://www.uyuni-project.org/',
@@ -30,16 +38,16 @@ const getGlobalMessages = (validationErrors, schemaUpgradeRequired) => {
   let messages = [];
 
   if (!validationErrors || !validationErrors.length) {
-    messages = messages.concat(validationErrors.map(msg => ({ severity: 'error', text: msg })))
+    messages = messages.concat(validationErrors.map(msg => ({ severity: 'error', text: msg })));
   }
 
   if (schemaUpgradeRequired) {
-    const schemaUpgradeError = t('A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems.')
+    const schemaUpgradeError = t('A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems.');
     messages = messages.concat({ severity: 'error', text: schemaUpgradeError });
   }
 
   return messages;
-}
+};
 
 const getFormMessages = (success, messages) => {
   if (success) {
@@ -53,12 +61,22 @@ const getFormMessages = (success, messages) => {
   return [];
 };
 
+type Props = {
+  isUyuni: boolean,
+  bounce: string,
+  validationErrors: Array<string>,
+  schemaUpgradeRequired: boolean,
+  webVersion: string,
+  productName: string,
+  customHeader: string,
+  customFooter: string,
+  legalNote: string,
+}
+
 const Login = (props: Props) => {
-
-
-  let loginInput = useInputValue('');
-  let passwordInput = useInputValue('');
-  let {onLogin, success, messages} = useLoginApi();
+  const loginInput = useInputValue('');
+  const passwordInput = useInputValue('');
+  const { onLogin, success, messages } = useLoginApi();
   const loginInputRef = useRef();
 
   useEffect(() => {
@@ -73,7 +91,8 @@ const Login = (props: Props) => {
       <LoginHeader
         title={product.title}
         text={product.headerTitle}
-        customHeader={props.customHeader}/>
+        customHeader={props.customHeader}
+      />
 
       <div className={`spacewalk-main-column-layout ${styles.fixed_content}`}>
         <section id="spacewalk-content">
@@ -87,8 +106,11 @@ const Login = (props: Props) => {
                     Discover a new way of managing your servers, packages, patches and more via one interface.
                   </p>
                   <p className="gray-text">
-                    Learn more about {product.key}:
-                    <a href={product.url} className="btn-dark" target="_blank"> View website</a>
+                    Learn more about
+                    {' '}
+                    {product.key}
+                    :
+                    <a href={product.url} className="btn-dark" target="_blank" rel="noopener noreferrer"> View website</a>
                   </p>
                 </div>
                 <div className="col-sm-5 col-sm-offset-1">
@@ -103,28 +125,28 @@ const Login = (props: Props) => {
                         type="text"
                         placeholder={t('Login')}
                         ref={loginInputRef}
-                        {...loginInput} />
+                        {...loginInput}
+                      />
                       <input
                         id="password-field"
-
                         name="password"
                         className="form-control"
                         type="password"
                         placeholder={t('Password')}
-                        {...passwordInput}/>
+                        {...passwordInput}
+                      />
                       <AsyncButton
                         id="login-btn"
                         className="btn-block"
                         defaultType="btn-success"
                         text={t('Sign In')}
-                        action={() =>
-                          onLogin({ login: loginInput.value, password: passwordInput.value })
-                            .then(success => success && window.location.replace(props.bounce))
+                        action={() => onLogin({ login: loginInput.value, password: passwordInput.value })
+                          .then(success => success && window.location.replace(props.bounce))
                         }
                       />
                     </div>
                   </form>
-                  <hr/>
+                  <hr />
                   <p className="gray-text small-text">
                     {props.legalNote}
                   </p>
@@ -138,10 +160,11 @@ const Login = (props: Props) => {
       <LoginFooter
         productName={props.productName}
         customFooter={props.customFooter}
-        webVersion={props.webVersion} />
+        webVersion={props.webVersion}
+      />
 
     </React.Fragment>
   );
-}
+};
 
 export default hot(module)(Login);

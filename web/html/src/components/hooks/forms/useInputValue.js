@@ -1,10 +1,8 @@
 import { useState, useCallback } from 'react';
 
 export function useInputValue(initialValue) {
-  let [value, setValue] = useState(initialValue);
-  let onChange = useCallback(function(event) {
-    setValue(event.currentTarget.value);
-  }, []);
+  const [value, setValue] = useState(initialValue);
+  const onChange = useCallback((event) => setValue(event.currentTarget.value), []);
 
   return {
     value,

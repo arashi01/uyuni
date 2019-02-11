@@ -1,26 +1,31 @@
+// @flow
 import React from 'react';
-import styles from "./login.css";
+import styles from './login.css';
 
-const LoginFooter = (props) => {
-  return (
-    <footer className={styles.footer_wrapper}>
-      <div className={styles.footer_fixed_bottom}>
-        <div className="wrapper wrap">
-          <div className="footer-copyright">
-            <a href="/rhn/help/Copyright.do">Copyright Notice</a>{' '}
-          </div>
-          <div className="footer-release">
-            {' '}{props.productName} release{' '}
-            <a href="/rhn/help/dispatcher/release_notes">
-              {props.webVersion}
-            </a>
-          </div>
-          <div>{props.customFooter}</div>
+type Props = {
+  productName: string,
+  webVersion: string,
+  customFooter: string,
+}
+
+const LoginFooter = (props: Props) => (
+  <footer className={styles.footer_wrapper}>
+    <div className={styles.footer_fixed_bottom}>
+      <div className="wrapper wrap">
+        <div className="footer-copyright">
+          <a href="/rhn/help/Copyright.do">Copyright Notice</a>{' '}
         </div>
-        <div className="bottom-line" />
+        <div className="footer-release">
+          {` ${props.productName} release `}
+          <a href="/rhn/help/dispatcher/release_notes">
+            {props.webVersion}
+          </a>
+        </div>
+        <div>{props.customFooter}</div>
       </div>
-    </footer>
-  );
-};
+      <div className="bottom-line" />
+    </div>
+  </footer>
+);
 
 export default LoginFooter;

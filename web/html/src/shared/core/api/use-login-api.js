@@ -1,4 +1,7 @@
-import React, {useState, useEffect} from 'react';
+//@flow
+
+// $FlowFixMe  // upgrade flow
+import { useState, useEffect } from 'react';
 import Network from '../../../utils/network';
 
 const errorsMessage = {
@@ -8,22 +11,20 @@ const errorsMessage = {
 
 };
 
-const useLoginApi = (props) => {
+const useLoginApi = () => {
+  const [messages, setMessages] = useState([]);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  let [messages, setMessages] = useState([]);
-  let [success, setSuccess] = useState(false);
-  let [loading, setLoading] = useState(false);
+  useEffect(() => window.addEventListener('beforeunload', (e) => {
+    if (loading) {
+      const confirmationMessage = t('Are you sure you want to close this page while login is in progress?');
+      (e || window.event).returnValue = confirmationMessage;
+      return confirmationMessage;
+    }
+  }), []);
 
-  useEffect(() =>
-      window.addEventListener('beforeunload', (e) => {
-        if (loading) {
-          const confirmationMessage = t('Are you sure you want to close this page while login is in progress?');
-          (e || window.event).returnValue = confirmationMessage;
-          return confirmationMessage;
-        }})
-    , []);
-
-  const onLogin = ({ login, password }) => {
+  const onLogin = ({ login, password }: {login: string, password: string}) => {
     setLoading(false);
 
     const formData = {
@@ -31,7 +32,7 @@ const useLoginApi = (props) => {
       password: password.trim(),
     };
 
-    return Network.post('/rhn/manager/api/login', JSON.stringify(formData), 'application/json',)
+    return Network.post('/rhn/manager/api/login', JSON.stringify(formData), 'application/json')
       .promise.then((data) => {
         setSuccess(data.success);
         setMessages(data.messages && data.messages.map(msg => errorsMessage[msg]));
@@ -52,8 +53,8 @@ const useLoginApi = (props) => {
     onLogin,
     success,
     loading,
-    messages
+    messages,
   };
-}
+};
 
 export default useLoginApi;
