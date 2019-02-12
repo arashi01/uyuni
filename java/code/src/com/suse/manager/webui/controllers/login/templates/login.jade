@@ -40,6 +40,8 @@ html
 
         div#init_data_url_bounce(style="display: none")
             | #{url_bounce}
+        div#init_data_request_method(style="display: none")
+            | #{request_method}
 
         script(type='text/javascript').
             pageRenderers.login.renderer(

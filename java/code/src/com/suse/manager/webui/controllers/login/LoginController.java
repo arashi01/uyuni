@@ -89,6 +89,7 @@ public class LoginController {
         Map<String, Object> model = new HashMap<>();
         model.put("url_bounce", urlBounce);
         model.put("isUyuni", ConfigDefaults.get().isUyuni());
+        model.put("request_method", reqMethod);
         model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
         model.put("schemaUpgradeRequired", Json.GSON.toJson(LoginHelper.isSchemaUpgradeRequired()));
         model.put("webVersion", Config.get().getString("web.version"));
@@ -97,8 +98,6 @@ public class LoginController {
         model.put("customFooter", Config.get().getString("java.custom_footer"));
         model.put("legalNote", Config.get().getString("java.legal_note"));
 
-        // TODO: Support request method for redirection?
-        // model.put("request_method", reqMethod);
         return new ModelAndView(model, "controllers/login/templates/login.jade");
     }
 
