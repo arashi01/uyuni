@@ -37,7 +37,7 @@ const products = {
 const getGlobalMessages = (validationErrors, schemaUpgradeRequired) => {
   let messages = [];
 
-  if (!validationErrors || !validationErrors.length) {
+  if (validationErrors && validationErrors.length > 0) {
     messages = messages.concat(validationErrors.map(msg => ({ severity: 'error', text: msg })));
   }
 

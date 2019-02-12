@@ -15,8 +15,8 @@ const LoginFooter = (props: Props) => (
         <div className="footer-copyright">
           <a href="/rhn/help/Copyright.do">Copyright Notice</a>{' '}
         </div>
-        <div className="footer-release">
-          {` ${props.productName} release `}
+        <div className={`footer-release ${styles.footer_release_container}`}>
+          {`${props.productName} release `}
           <a href="/rhn/help/dispatcher/release_notes">
             {props.webVersion}
           </a>
