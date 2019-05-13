@@ -48,6 +48,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         set.add("/rhn/Login");
         set.add("/rhn/ReLogin");
         set.add("/rhn/newlogin/");
+        set.add("/rhn/manager/login");
 
         LOGIN_URIS = UnmodifiableSet.decorate(set);
 
@@ -174,7 +175,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
             }
 
             URIBuilder uriBuilder = new URIBuilder();
-            uriBuilder.setPath("/rhn/Login.do");
+            uriBuilder.setPath("/rhn/manager/login");
             uriBuilder.addParameter("url_bounce", urlBounce);
             uriBuilder.addParameter("request_method", request.getMethod());
 

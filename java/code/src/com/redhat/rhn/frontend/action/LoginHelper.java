@@ -57,6 +57,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -292,9 +293,11 @@ public class LoginHelper {
     }
 
     /**
-     * @param orgIn
+     * Schedule update of the errata cache for a given organization.
+     *
+     * @param orgIn organization
      */
-    private static void publishUpdateErrataCacheEvent(Org orgIn) {
+    public static void publishUpdateErrataCacheEvent(Org orgIn) {
         StopWatch sw = new StopWatch();
         if (log.isDebugEnabled()) {
             log.debug("Updating errata cache");
@@ -410,4 +413,23 @@ public class LoginHelper {
             ce.getLastCommandOutput().replace("\n", "") : null;
     }
 
+    /**
+     * Log a user into the site and create the user's session.
+     *
+     * @param username login name
+     * @param password unencrypted password
+     * @param errors list of error messages to be populated
+     * @return the user object
+     */
+    public static User loginUser(String username, String password, List<String> errors) {
+        User user = null;
+        try {
+            user = UserManager.loginUser(username, password);
+        }
+        catch (LoginException e) {
+            // TODO: Return error messages instead of adding to the incoming list
+            errors.add(e.getMessage());
+        }
+        return user;
+    }
 }

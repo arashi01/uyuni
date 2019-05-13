@@ -6,7 +6,8 @@ $(document).on("ready", function() {
   $("#scroll-top").remove();
   $("aside").remove();
   $('.navbar-toggle').remove();
-  formFocus('loginForm', 'username');
+  // TODO: Put the focus on the input
+  // formFocus('loginForm', 'username');
   $("body").addClass('login-page');
   $('header').wrapInner('<div class="wrap"></div>').addClass('Raleway-font');
 
