@@ -1,7 +1,6 @@
-const React = require("react");
-const Messages = require("../../components/messages").Messages;
-const {AsyncButton} = require("../../components/buttons");
-
+import React from "react";
+import {Messages} from "../../components/messages";
+import {AsyncButton} from "../../components/buttons";
 import LoginApi from "../../shared/core/api/login-api";
 
 class Login extends React.Component {
@@ -51,6 +50,7 @@ class Login extends React.Component {
              loading,
              messages,
            }) => (
+            <form name="loginForm">
               <div className="col-sm-5 col-sm-offset-1">
                 {
                   this.renderMessages({success, messages})
@@ -64,19 +64,16 @@ class Login extends React.Component {
                   <AsyncButton
                     id="login-btn"
                     defaultType="btn-success btn-block"
-                    name={t("Sign In")}
+                    text={t("Sign In")}
                     action={() => onLogin({login: this.state.login, password: this.state.password})}/>
                 </div>
               </div>
-            )
+            </form>
+          )
         }
       </LoginApi>
     )
   }
 }
-
-LoginApi.propTypes = {
-  bounce: React.PropTypes.string.isRequired,
-};
 
 export default Login;

@@ -12,20 +12,13 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.login;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.LoginAction;
 import com.redhat.rhn.frontend.action.LoginHelper;
@@ -33,9 +26,21 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Spark controller class to perform the login.
@@ -47,6 +52,15 @@ public class LoginController {
     private static final String URL_CREATE_FIRST_USER = "/newlogin/CreateFirstUser.do";
 
     private LoginController() { }
+
+    /**
+     * Init all the routes used by LoginController
+     * @param jade the used jade template engine
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/login", withCsrfToken(LoginController::loginView), jade);
+        post("/manager/api/login", LoginController::login);
+    }
 
     /**
      * Return the login page.
@@ -76,7 +90,7 @@ public class LoginController {
         model.put("url_bounce", urlBounce);
         // TODO: Support request method for redirection?
         // model.put("request_method", reqMethod);
-        return new ModelAndView(model, "login/login.jade");
+        return new ModelAndView(model, "controllers/login/templates/login.jade");
     }
 
     /**

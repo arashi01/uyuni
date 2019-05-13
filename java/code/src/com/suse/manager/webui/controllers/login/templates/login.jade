@@ -1,3 +1,5 @@
+include /templates/common.jade
+
 #login
 
 script(type='text/javascript').
@@ -6,10 +8,13 @@ script(type='text/javascript').
 script(src='/javascript/susemanager-login.js', type='text/javascript')
 script(src='/javascript/manager/login/login.renderer.bundle.js', type='text/javascript')
 
+div#init_data_url_bounce(style="display: none")
+    | #{url_bounce}
+
 script(type='text/javascript').
-    pageRenderers.login.loginRenderer(
+    pageRenderers.login.renderer(
         'login',
         {
-            urlBounce: "#{url_bounce}"
+            urlBounce: document.getElementById('init_data_url_bounce').textContent
         }
     );

@@ -1,11 +1,10 @@
 import Login from "./login";
-const ReactDOM = require("react-dom");
-const React = require("react");
+import ReactDOM from "react-dom";
+import React from "react";
 
 window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.login = window.pageRenderers.login || {};
-
-window.pageRenderers.login.loginRenderer = (id, {urlBounce}) => ReactDOM.render(
+window.pageRenderers.login.renderer = (id, {urlBounce}) => ReactDOM.render(
   <Login
     bounce={urlBounce}
   />,

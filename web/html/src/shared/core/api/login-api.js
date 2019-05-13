@@ -1,5 +1,5 @@
-const React = require("react");
-const Network = require("../../../utils/network");
+import React from "react";
+import Network from "../../../utils/network";
 
 class LoginApi extends React.Component {
 
@@ -75,10 +75,5 @@ class LoginApi extends React.Component {
     })
   }
 }
-
-LoginApi.propTypes = {
-  bounce: React.PropTypes.string.isRequired,
-  children: React.PropTypes.func.isRequired,
-};
 
 export default LoginApi;

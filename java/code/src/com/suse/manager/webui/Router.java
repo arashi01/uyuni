@@ -39,7 +39,6 @@ import com.suse.manager.webui.controllers.FrontendLogController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
-import com.suse.manager.webui.controllers.LoginController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
@@ -57,6 +56,7 @@ import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
+import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.errors.NotFoundException;
 
 import org.apache.http.HttpStatus;
@@ -85,8 +85,7 @@ public class Router implements SparkApplication {
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
         // Login
-        get("/manager/login", withCsrfToken(LoginController::loginView), jade);
-        post("/manager/api/login", LoginController::login);
+        LoginController.initRoutes(jade);
 
         //CVEAudit
 
