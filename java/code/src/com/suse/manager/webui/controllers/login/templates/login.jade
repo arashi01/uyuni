@@ -11,18 +11,18 @@ html
         link(rel='shortcut icon', href='/img/favicon.ico')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         // import default fonts/icons styles
-        link(rel='stylesheet', href='/fonts/font-awesome/css/font-awesome.css')
+        link(rel='stylesheet', href='/fonts/font-awesome/css/font-awesome.css?cb=#{webVersion}')
         // import custom fonts/icons styles
-        link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css')
+        link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css?cb=#{webVersion}')
         // import spacewalk styles
-        link(rel='stylesheet', href='/css/spacewalk.css')
-        script(src='/javascript/loggerhead.js')
-        script(src='/javascript/frontend-log.js')
-        script(src='/javascript/jquery.js')
-        script(src='/javascript/bootstrap.js')
-        script(src='/javascript/susemanager-translate.js')
-        script(src='/vendors/vendors.bundle.js')
-        script(src='/javascript/manager/polyfill.bundle.js')
+        link(rel='stylesheet', href='/css/spacewalk.css?cb=#{webVersion}')
+        script(src='/javascript/loggerhead.js?cb=#{webVersion}')
+        script(src='/javascript/frontend-log.js?cb=#{webVersion}')
+        script(src='/javascript/jquery.js?cb=#{webVersion}')
+        script(src='/javascript/bootstrap.js?cb=#{webVersion}')
+        script(src='/javascript/susemanager-translate.js?cb=#{webVersion}')
+        script(src='/vendors/vendors.bundle.js?cb=#{webVersion}')
+        script(src='/javascript/manager/polyfill.bundle.js?cb=#{webVersion}')
         noscript
             .alert.alert-danger
                 | Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.
@@ -36,7 +36,7 @@ html
         script(type='text/javascript').
             const csrfToken = "#{csrf_token}";
 
-        script(src='/javascript/manager/login/login.renderer.bundle.js', type='text/javascript')
+        script(src='/javascript/manager/login/login.renderer.bundle.js?cb=#{webVersion}', type='text/javascript')
 
         div#init_data_url_bounce(style="display: none")
             | #{url_bounce}
