@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.LoginAction;
@@ -90,6 +91,10 @@ public class LoginController {
         model.put("isUyuni", ConfigDefaults.get().isUyuni());
         model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
         model.put("schemaUpgradeRequired", Json.GSON.toJson(LoginHelper.isSchemaUpgradeRequired()));
+        model.put("webVersion", Config.get().getString("web.version"));
+        model.put("productName", Config.get().getString(ConfigDefaults.PRODUCT_NAME));
+        model.put("customHeader", Config.get().getString("java.custom_header"));
+        model.put("customFooter", Config.get().getString("java.custom_footer"));
 
         // TODO: Support request method for redirection?
         // model.put("request_method", reqMethod);

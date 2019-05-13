@@ -1,23 +1,59 @@
-include /templates/common.jade
+doctype html
+html
+    head
+        // enclosing head tags in layout_c.jsp
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        // HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+        //if lt IE 9
+          script(type='text/javascript', src='/javascript/html5.js')
+          script(type='text/javascript', src='/javascript/respond.js')
+        meta(http-equiv='content-type', content='text/html;charset=UTF-8')
+        title
+            | Uyuni
+        link(rel='shortcut icon', href='/img/favicon.ico')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        // import default fonts/icons styles
+        link(rel='stylesheet', href='/fonts/font-awesome/css/font-awesome.css')
+        // import custom fonts/icons styles
+        link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css')
+        // import spacewalk styles
+        link(rel='stylesheet', href='/css/spacewalk.css')
+        script(src='/javascript/loggerhead.js')
+        script(src='/javascript/frontend-log.js')
+        script(src='/javascript/jquery.js')
+        script(src='/javascript/bootstrap.js')
+        script(src='/javascript/susemanager-translate.js')
+        script(src='/vendors/vendors.bundle.js')
+        script(src='/javascript/manager/polyfill.bundle.js')
+        noscript
+            .alert.alert-danger
+                | Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.
 
-#login
+        include /templates/common.jade
 
-script(type='text/javascript').
-    const csrfToken = "#{csrf_token}";
+        body(class="login-page")
+            #login
 
-script(src='/javascript/susemanager-login.js', type='text/javascript')
-script(src='/javascript/manager/login/login.renderer.bundle.js', type='text/javascript')
+        +csrfToken
+        script(type='text/javascript').
+            const csrfToken = "#{csrf_token}";
 
-div#init_data_url_bounce(style="display: none")
-    | #{url_bounce}
+        script(src='/javascript/manager/login/login.renderer.bundle.js', type='text/javascript')
 
-script(type='text/javascript').
-    pageRenderers.login.renderer(
-        'login',
-        {
-            isUyuni: JSON.parse("#{isUyuni}"),
-            urlBounce: document.getElementById('init_data_url_bounce').textContent,
-            validationErrors: JSON.parse('!{validationErrors}'),
-            schemaUpgradeRequired: JSON.parse('!{schemaUpgradeRequired}')
-        }
-    );
+        div#init_data_url_bounce(style="display: none")
+            | #{url_bounce}
+
+        script(type='text/javascript').
+            pageRenderers.login.renderer(
+                'login',
+                {
+                    isUyuni: JSON.parse("#{isUyuni}"),
+                    urlBounce: document.getElementById('init_data_url_bounce').textContent,
+                    validationErrors: JSON.parse('!{validationErrors}'),
+                    schemaUpgradeRequired: JSON.parse('!{schemaUpgradeRequired}'),
+                    webVersion: '!{webVersion}',
+                    productName: '!{productName}',
+                    customHeader: '!{customHeader}',
+                    customFooter: '!{customFooter}'
+                }
+            );
