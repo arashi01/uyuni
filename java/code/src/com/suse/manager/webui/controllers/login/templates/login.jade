@@ -15,7 +15,13 @@ html
         // import custom fonts/icons styles
         link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css?cb=#{webVersion}')
         // import spacewalk styles
-        link(rel='stylesheet', href='/css/spacewalk.css?cb=#{webVersion}')
+        if isDevMode
+            link(rel='stylesheet/less', href='/css/spacewalk.less')
+            script(type='text/javascript').
+                less = {env: 'development'};
+            script(src='/javascript/less.js')
+        else
+            link(rel='stylesheet', href='/css/spacewalk.css?cb=#{webVersion}')
         script(src='/javascript/loggerhead.js?cb=#{webVersion}')
         script(src='/javascript/frontend-log.js?cb=#{webVersion}')
         script(src='/javascript/jquery.js?cb=#{webVersion}')
